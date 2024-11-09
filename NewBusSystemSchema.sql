@@ -60,6 +60,8 @@ create table Payments (
 );
 
 
+
+
 INSERT INTO Users (UserName, PhoneNumber, Gender, Email, Address, Role, DateCreated) VALUES
 ('Rajesh Kumar', '9876543210', 'Male', 'rajesh.kumar@example.com', 'Mumbai, Maharashtra', 'User', GETDATE()),
 ('Priya Sharma', '9765432109', 'Female', 'priya.sharma@example.com', 'Delhi', 'User', GETDATE()),
@@ -132,3 +134,12 @@ INSERT INTO Payments (BookingId, PaymentAmount, PaymentMode, Status) VALUES
 (8, 1600.00, 'Cash', 'Pending'),
 (9, 2100.00, 'Online', 'Completed'),
 (10, 800.00, 'Cash', 'Pending');
+
+ALTER TABLE Bookings
+ADD BookingStatus VARCHAR(50) DEFAULT 'Booked';
+
+UPDATE Bookings
+SET BookingStatus = 'Booked'
+WHERE BookingStatus IS NULL;
+
+select * from Bookings
