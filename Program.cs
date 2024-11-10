@@ -1,4 +1,6 @@
 using FastX_CaseStudy.Authentication;
+using FastX_CaseStudy.Models;
+using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +17,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
       .AddEntityFrameworkStores<ApplicationDbContext>()
       .AddDefaultTokenProviders();
-
 // Adding Authentication
+builder.Services.AddDbContext<BusBookingContext>();
+builder.Services.AddScoped<IBusService, BusService>();
+builder.Services.AddScoped<IBusRoute, BusRouteService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
