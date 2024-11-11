@@ -1,7 +1,10 @@
-﻿using FastX_CaseStudy.Models;
+﻿using AutoMapper;
+using FastX_CaseStudy.DTO;
+using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastX_CaseStudy.Controllers
 {
@@ -10,16 +13,31 @@ namespace FastX_CaseStudy.Controllers
     public class BusesController : ControllerBase
     {
         private readonly IBusService _service;
-        public BusesController(IBusService service)
+        private readonly IMapper _mapper;
+        public BusesController(IBusService service,IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
+        //[HttpGet]
+        //public IActionResult GetAllBuses()
+        //{
+        //    List<bus> buses = _service.GetAllBuses();
+        //    return Ok(buses);
+        //}
         [HttpGet]
-        public IActionResult GetAllBuses()
+        public async Task<ActionResult<List<BusDTO>>> GetAllBus()
         {
             List<bus> buses = _service.GetAllBuses();
-            return Ok(buses);
+            if (buses != null)
+            {
+           
+                List<BusDTO> busDtos = _mapper.Map<List<BusDTO>>(buses);
+                return busDtos;
+            }
+            else
+            { return NotFound(); }
         }
 
         [HttpGet("{id}")]

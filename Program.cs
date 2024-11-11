@@ -1,4 +1,5 @@
 using FastX_CaseStudy.Authentication;
+using FastX_CaseStudy.Mappings;
 using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
