@@ -22,6 +22,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddDbContext<BusBookingContext>();
 builder.Services.AddScoped<IBusService, BusService>();
 builder.Services.AddScoped<IBusRoute, BusRouteService>();
+builder.Services.AddScoped<IAdmin, AdminService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
