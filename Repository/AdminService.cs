@@ -74,6 +74,16 @@ namespace FastX_CaseStudy.Repository
             }
         }
 
+        public List<User> DisplayAdmin()
+        {
+           var admin1=_context.Users.Where(x=>x.Role=="Admin").ToList();
+            if (admin1.Any())
+            {
+                return admin1;
+            }
+            return null;
+        }
+
         public List<BusOperator> GetAllOperators()
         {
           var operator1= _context.BusOperators.ToList();
@@ -86,7 +96,7 @@ namespace FastX_CaseStudy.Repository
 
         public List<User> GetAllUsers()
         {
-          var users= _context.Users.ToList();
+          var users= _context.Users.Where(x=>x.Role=="User").ToList();
             if (users.Count > 0)
             {
                 return users;

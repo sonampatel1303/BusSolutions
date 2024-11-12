@@ -5,6 +5,7 @@ namespace FastX_CaseStudy.Repository
     public interface IAdmin
     {
         List<User> GetAllUsers();
+        List<User> DisplayAdmin();
         List<BusOperator> GetAllOperators();
 
         User GetUserDetails(int userid);

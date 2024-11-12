@@ -96,5 +96,12 @@ namespace FastX_CaseStudy.Controllers
             string result = _service.DeleteOperator(id);
             return Ok(result);
         }
+
+        //admin
+        [HttpGet("admin")]
+        public IActionResult AdminDetails() {
+            List<User> admins = _service.DisplayAdmin();
+            return Ok(admins);
+        }
     }
 }
