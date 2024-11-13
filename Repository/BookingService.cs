@@ -1,4 +1,5 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 
 namespace FastX_CaseStudy.Repository
 {
@@ -37,6 +38,10 @@ namespace FastX_CaseStudy.Repository
             var booking = _bookingContext.Bookings.FirstOrDefault(b => b.BookingId == id);
             if (booking != null)
             {
+                if (booking.BookingStatus == "Cancelled")
+                {
+                    throw new BookingAlreadyCancelled($"Booking with ID {id} is already cancelled");
+                }
                 booking.BookingStatus = "Cancelled";
                 _bookingContext.Entry(booking).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 _bookingContext.SaveChanges();

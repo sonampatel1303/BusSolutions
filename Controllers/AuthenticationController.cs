@@ -108,7 +108,7 @@ namespace FastX_CaseStudy.Controllers
                 {
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
                 }
-                if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                if (await roleManager.RoleExistsAsync(UserRoles.Admin))
 
                     await userManager.AddToRoleAsync(user, UserRoles.Admin);
 
@@ -120,7 +120,7 @@ namespace FastX_CaseStudy.Controllers
                 {
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.BusOperator));
                 }
-                if (!await roleManager.RoleExistsAsync(UserRoles.BusOperator))
+                if (await roleManager.RoleExistsAsync(UserRoles.BusOperator))
 
                     await userManager.AddToRoleAsync(user, UserRoles.BusOperator);
 

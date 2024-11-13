@@ -1,5 +1,7 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,9 +22,22 @@ namespace FastX_CaseStudy.Controllers
         [HttpGet]
         public IActionResult BrowseRoutes(string source, string destination)
         {
-            var routes = _service.BrowseRoutes(source, destination);
+            //var routes = _service.BrowseRoutes(source, destination);
 
-            return Ok(routes);
+            //return Ok(routes);
+            try
+            {
+                var routes = _service.BrowseRoutes(source, destination);
+                return Ok(routes);
+            }
+            catch (SourcetoDestinationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, " " + ex.Message);
+            }
         }
 
 
@@ -37,6 +52,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(route);
         }
 
+        [Authorize(Roles = "Admin,BusOperator")]
         [HttpPost]
         public IActionResult AddRoute(BusRoute routeData)
         {
@@ -49,6 +65,8 @@ namespace FastX_CaseStudy.Controllers
             return Ok(routeId);
         }
 
+
+        [Authorize(Roles = "Admin,BusOperator")]
         [HttpPut("{id}")]
         public IActionResult UpdateRoute(int id, BusRoute routeData)
         {
@@ -62,7 +80,7 @@ namespace FastX_CaseStudy.Controllers
 
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteRoute(int id)
         {

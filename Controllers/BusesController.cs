@@ -2,6 +2,7 @@
 using FastX_CaseStudy.DTO;
 using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,18 +47,24 @@ namespace FastX_CaseStudy.Controllers
             bus buses = _service.GetBusById(id);
             return Ok(buses);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post(bus buses)
         {
             int Result = _service.AddNewBus(buses);
             return Ok(Result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult Put(bus buses)
         {
             string result = _service.UpdateBus(buses);
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete(int id)
         {

@@ -1,4 +1,5 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 
 namespace FastX_CaseStudy.Repository
 {
@@ -11,16 +12,25 @@ namespace FastX_CaseStudy.Repository
         }
         public int AddPayment(Payment payment)
         {
-            if (payment != null)
+            try
             {
+                if (payment == null || payment.PaymentAmount <= 0)
+                {
+                    throw new InvalidPaymentException("Payment is invalid! Amount should be greater than zero");
+                }
                 _context.Payments.Add(payment);
                 _context.SaveChanges();
                 return payment.Id;
             }
-            else
+            catch (InvalidPaymentException ex)
             {
-                return 0;
+                throw new InvalidPaymentException(ex.Message);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occured while processing payment");
+            }
+
         }
 
         public string DeletePayment(int id)

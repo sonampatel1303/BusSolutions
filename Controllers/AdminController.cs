@@ -1,5 +1,6 @@
 ﻿using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -8,6 +9,8 @@ namespace FastX_CaseStudy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
+
     public class AdminController : ControllerBase
     {
         private readonly IAdmin _service;
@@ -18,13 +21,14 @@ namespace FastX_CaseStudy.Controllers
         }
 
         // Users
+      
         [HttpGet("users")]
         public IActionResult GetAllUsers()
         {
             List<User> users = _service.GetAllUsers();
             return Ok(users);
         }
-
+       
         [HttpGet("users/{id}")]
         public IActionResult GetUserById(int id)
         {
@@ -36,6 +40,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(user);
         }
 
+      
         [HttpPost("users")]
         public IActionResult PostUser(User user)
         {
@@ -43,6 +48,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("users/{userid}")]
         public IActionResult PutUser(int userid, User user)
         {
@@ -50,6 +56,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
         }
 
+        
         [HttpDelete("users/{id}")]
         public IActionResult DeleteUser(int id)
         {
@@ -58,6 +65,7 @@ namespace FastX_CaseStudy.Controllers
         }
 
         // Operators
+        
         [HttpGet("operators")]
         public IActionResult GetAllOperators()
         {
@@ -65,6 +73,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(operators);
         }
 
+        
         [HttpGet("operators/{id}")]
         public IActionResult GetOperatorById(int id)
         {
@@ -76,6 +85,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(operatorDetails);
         }
 
+      
         [HttpPost("operators")]
         public IActionResult PostOperator(BusOperator busOperator)
         {
@@ -83,6 +93,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
         }
 
+      
         [HttpPut("operators/{opid}")]
         public IActionResult PutOperator(int opid, BusOperator busOperator)
         {
@@ -90,6 +101,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
         }
 
+      
         [HttpDelete("operators/{id}")]
         public IActionResult DeleteOperator(int id)
         {
@@ -98,6 +110,7 @@ namespace FastX_CaseStudy.Controllers
         }
 
         //admin
+      
         [HttpGet("admin")]
         public IActionResult AdminDetails() {
             List<User> admins = _service.DisplayAdmin();

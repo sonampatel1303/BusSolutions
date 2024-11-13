@@ -1,4 +1,5 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastX_CaseStudy.Repository
@@ -84,15 +85,11 @@ namespace FastX_CaseStudy.Repository
                 .Where(r => r.SourcePoint.Contains(source) && r.Destination.Contains(destination))
                 .ToList();
 
-            if (routes.Count > 0)
+            if (routes.Count == 0)
             {
-                return routes;
+                throw new SourcetoDestinationException($"No routes found between {source} and {destination}");
             }
-            else
-            {
-                return null;
-            }
-
+            return routes;
 
         }
 

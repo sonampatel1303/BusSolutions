@@ -1,5 +1,7 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,7 @@ namespace FastX_CaseStudy.Controllers
             _payment = payment;
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet]
         public IActionResult GetAllPayments() { 
 
@@ -23,6 +26,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(payments);
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public IActionResult ViewPaymentbyId(int id)
         {
@@ -34,6 +38,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(payments);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult AddPayment(Payment payments)
         {
@@ -41,11 +46,22 @@ namespace FastX_CaseStudy.Controllers
             {
                 return BadRequest("Payment data is required.");
             }
-
-            int payId = _payment.AddPayment(payments);
-            return Ok(payId);
+            try
+            {
+                int payId = _payment.AddPayment(payments);
+                return Ok(payId);
+            }
+            catch (InvalidPaymentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, " " + ex.Message);
+            }
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPut]
         public IActionResult UpdatePayment(Payment payments)
         {
@@ -58,6 +74,8 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
 
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult DeletePayment(int id)
         {

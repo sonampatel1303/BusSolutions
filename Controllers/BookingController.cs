@@ -1,5 +1,7 @@
-﻿using FastX_CaseStudy.Models;
+﻿using FastX_CaseStudy.Exceptions;
+using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +27,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(booking);
         }
 
-
+        [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public IActionResult ViewBookingHistorybyId(int id)
         {
@@ -37,7 +39,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(booking);
         }
 
-
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult AddBooking(Booking booking)
         {
@@ -50,6 +52,7 @@ namespace FastX_CaseStudy.Controllers
             return Ok(bookingId);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPut]
         public IActionResult UpdateBooking(Booking booking)
         {
@@ -62,17 +65,31 @@ namespace FastX_CaseStudy.Controllers
             return Ok(result);
 
         }
+
+        [Authorize(Roles = "User")]
         [HttpPut("{id}")]
         public IActionResult CancelBooking(int id)
         {
-            if (id == 0 || id == null)
+            if (id == 0)
             {
                 return BadRequest("Booking data is required.");
             }
-            string result = _service.CancelBooking(id);
-            return Ok(result);
+            try
+            {
+                string result = _service.CancelBooking(id);
+                return Ok(result);
+            }
+            catch (BookingAlreadyCancelled ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, " " + ex.Message);
+            }
         }
 
+        [Authorize(Roles = "User")]
         [HttpDelete]
         public IActionResult DeleteBooking(int id)
         {
