@@ -62,7 +62,7 @@ namespace FastX_CaseStudy.Repository
 
             //   string isRefunded = RefundPayment(booking);
 
-                if (payments.PaymentMode=="Online")
+                if (payments!=null && payments.PaymentMode=="Online")
                 {
                     _bookingContext.Bookings.Remove(booking);
                     _bookingContext.SaveChanges();
@@ -71,7 +71,8 @@ namespace FastX_CaseStudy.Repository
                 else
                 {
                     _bookingContext.Bookings.Remove(booking);
-                    return "Refund can't be processed,payment was in Cash";
+                    _bookingContext.SaveChanges();
+                    return "Booking deleted,Refund can't be processed,payment was in Cash";
                 }
             }
             else
