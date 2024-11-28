@@ -3,12 +3,14 @@ using FastX_CaseStudy.DTO;
 using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastX_CaseStudy.Controllers
 {
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class BusesController : ControllerBase
@@ -21,12 +23,7 @@ namespace FastX_CaseStudy.Controllers
             _mapper = mapper;
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllBuses()
-        //{
-        //    List<bus> buses = _service.GetAllBuses();
-        //    return Ok(buses);
-        //}
+       
         [HttpGet]
         public async Task<ActionResult<List<BusDTO>>> GetAllBus()
         {

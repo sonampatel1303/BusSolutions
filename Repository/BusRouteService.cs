@@ -78,20 +78,37 @@ namespace FastX_CaseStudy.Repository
         }
 
 
+        //public List<BusRoute> BrowseRoutes(string source, string destination)
+        //{
+
+        //    var routes = _context.BusRoutes
+        //        .Where(r => r.SourcePoint.Contains(source) && r.Destination.Contains(destination))
+        //        .ToList();
+
+        //    if (routes.Count == 0)
+        //    {
+        //        throw new SourcetoDestinationException($"No routes found between {source} and {destination}");
+        //    }
+        //    return routes;
+
+        //}
         public List<BusRoute> BrowseRoutes(string source, string destination)
         {
-
+            // Query to get the routes along with the related bus details
             var routes = _context.BusRoutes
                 .Where(r => r.SourcePoint.Contains(source) && r.Destination.Contains(destination))
+                .Include(r => r.Bus)  // This will include the related bus details for each route
                 .ToList();
 
             if (routes.Count == 0)
             {
+                // Throw an exception if no routes are found
                 throw new SourcetoDestinationException($"No routes found between {source} and {destination}");
             }
-            return routes;
 
+            return routes; // Return the routes including bus details
         }
+
 
 
         public BusRoute GetRouteDetails(int routeId)

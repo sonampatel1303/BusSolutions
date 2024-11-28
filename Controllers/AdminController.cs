@@ -1,12 +1,14 @@
 ﻿using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 namespace FastX_CaseStudy.Controllers
 {
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
    [Authorize(Roles ="Admin")]

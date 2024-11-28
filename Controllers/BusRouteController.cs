@@ -2,11 +2,13 @@
 using FastX_CaseStudy.Models;
 using FastX_CaseStudy.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastX_CaseStudy.Controllers
 {
+    [EnableCors("AllowAllOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class BusRouteController : ControllerBase
